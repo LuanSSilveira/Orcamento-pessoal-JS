@@ -40,6 +40,24 @@ class Bd {
 
 		localStorage.setItem('id', id)
 	}
+	recuperarTodosRegistros(){
+
+		let despesas = Array()
+
+		let id = localStorage.getItem('id')
+
+		for(let i = 1; i <= id; i++){
+			let despesa = JSON.parse(localStorage.getItem(id))
+
+			if(despesa === null){
+				continue
+			}
+			
+			despesas.push(despesa)
+		}
+		return despesas
+
+	}
 }
 
 let bd = new Bd()
@@ -87,3 +105,29 @@ function cadastrarDespesa() {
 		$('#modalRegistraDespesa').modal('show') 
 	}
 }
+
+function carregaListaDespesas() {
+
+	let despesas = Array()
+
+	despesas = bd.recuperarTodosRegistros() 
+
+	/*
+
+	<tr>
+		<td>15/03/2018</td>
+		<td>Alimentação</td>
+		<td>Compras do mês</td>
+		<td>444.75</td>
+	</tr>
+
+	*/
+
+	let listaDespesas = document.getElementById("listaDespesas")
+
+	despesas.forEach(function(d){
+
+		console.log(d)
+	}
+
+ }
