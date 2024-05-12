@@ -40,23 +40,30 @@ class Bd {
 
 		localStorage.setItem('id', id)
 	}
-	recuperarTodosRegistros(){
 
+	recuperarTodosRegistros() {
+
+		//array de despesas
 		let despesas = Array()
 
 		let id = localStorage.getItem('id')
 
-		for(let i = 1; i <= id; i++){
-			let despesa = JSON.parse(localStorage.getItem(id))
+		//recuperar todas as despesas cadastradas em localStorage
+		for(let i = 1; i <= id; i++) {
 
-			if(despesa === null){
+			//recuperar a despesa
+			let despesa = JSON.parse(localStorage.getItem(i))
+
+			//existe a possibilidade de haver índices que foram pulados/removidos
+			//nestes casos nós vamos pular esses índices
+			if(despesa === null) {
 				continue
 			}
-			
+
 			despesas.push(despesa)
 		}
-		return despesas
 
+		return despesas
 	}
 }
 
@@ -83,7 +90,7 @@ function cadastrarDespesa() {
 
 
 	if(despesa.validarDados()) {
-		//bd.gravar(despesa)
+		bd.gravar(despesa)
 
 		document.getElementById('modal_titulo').innerHTML = 'Registro inserido com sucesso'
 		document.getElementById('modal_titulo_div').className = 'modal-header text-success'
@@ -93,6 +100,8 @@ function cadastrarDespesa() {
 
 		//dialog de sucesso
 		$('#modalRegistraDespesa').modal('show') 
+		
+
 	} else {
 		
 		document.getElementById('modal_titulo').innerHTML = 'Erro na inclusão do registro'
@@ -127,6 +136,31 @@ function carregaListaDespesas() {
 
 	despesas.forEach(function(d){
 
+		//Criando a linha (tr)
+		var linha = listaDespesas.insertRow();
+
+		//Criando as colunas (td)
+		linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}` 
+
+		//Ajustar o tipo
+		switch(d.tipo){
+			case '1': d.tipo = 'Alimentação'
+				break
+			case '2': d.tipo = 'Educação'
+				break
+			case '3': d.tipo = 'Lazer'
+				break
+			case '4': d.tipo = 'Saúde'
+				break
+			case '5': d.tipo = 'Transporte'
+				break
+			case '6': d.tipo = 'Contas mensais'
+				break
+			
+		}
+		linha.insertCell(1).innerHTML = d.tipo
+		linha.insertCell(2).innerHTML = d.descricao
+		linha.insertCell(3).innerHTML = d.valor
 		console.log(d)
 	}
 
